@@ -1,0 +1,9 @@
+public class FuncionarioMapper {
+    public FuncionarioDTO paraDTO(Funcionario funcionario) {
+        return new FuncionarioDTO(funcionario.getId(), funcionario.getNome(), funcionario.getCargo(), funcionario.getSalario());
+    }
+
+    public Funcionario paraEntidade(FuncionarioDTO dto) {
+        return new Funcionario(dto.getId(), dto.getNome(), dto.getCargo(), dto.getSalario());
+    }
+}

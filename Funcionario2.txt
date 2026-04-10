@@ -1,0 +1,34 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class FuncionarioRepository {
+    private List<Funcionario> bancoDeDados = new ArrayList<>();
+
+    public void salvar(Funcionario funcionario) {
+        this.bancoDeDados.add(funcionario);
+    }
+
+    public List<Funcionario> buscarTodos() {
+        return this.bancoDeDados;
+    }
+
+    public Optional<Funcionario> buscarPorId(Long id) {
+        return bancoDeDados.stream()
+                .filter(f -> f.getId().equals(id))
+                .findFirst();
+    }
+
+    public boolean deletar(Long id) {
+        return bancoDeDados.removeIf(f -> f.getId().equals(id));
+    }
+
+    public void atualizar(Funcionario funcionario) {
+        for (int i = 0; i < bancoDeDados.size(); i++) {
+            if (bancoDeDados.get(i).getId().equals(funcionario.getId())) {
+                bancoDeDados.set(i, funcionario);
+                break;
+            }
+        }
+    }
+}

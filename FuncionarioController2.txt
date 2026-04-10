@@ -1,0 +1,62 @@
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping("/funcionarios")
+public class FuncionarioController {
+
+    private static FuncionarioRepository repository = new FuncionarioRepository();
+    private FuncionarioMapper mapper = new FuncionarioMapper();
+
+    public void adicionar(Long id, String nome, String cargo, Double salario) {
+        Funcionario f = new Funcionario(id, nome, cargo, salario);
+        repository.salvar(f);
+    }
+
+    public void exibirTodos() {
+        for (Funcionario f : repository.buscarTodos()) {
+            System.out.println(mapper.paraDTO(f).toString());
+        }
+    }
+
+    @PostMapping
+    public FuncionarioDTO post(@RequestBody FuncionarioDTO dto) {
+        Funcionario f = mapper.paraEntidade(dto);
+        repository.salvar(f);
+        return dto;
+    }
+
+    @GetMapping
+    public List<FuncionarioDTO> get() {
+        return repository.buscarTodos().stream()
+                .map(mapper::paraDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public FuncionarioDTO getById(@PathVariable Long id) {
+        return repository.buscarPorId(id)
+                .map(mapper::paraDTO)
+                .orElse(null);
+    }
+
+    @PutMapping("/{id}")
+    public FuncionarioDTO put(@PathVariable Long id, @RequestBody FuncionarioDTO dto) {
+        if (repository.buscarPorId(id).isPresent()) {
+            Funcionario f = mapper.paraEntidade(dto);
+            f.setId(id);
+            repository.atualizar(f);
+            return mapper.paraDTO(f);
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable Long id) {
+        if (repository.deletar(id)) {
+            return "Funcionario removido com sucesso";
+        }
+        return "Funcionario nao encontrado";
+    }
+}

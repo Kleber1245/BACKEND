@@ -1,0 +1,33 @@
+public class FuncionarioDTO {
+    private Long id;
+    private String nome;
+    private String cargo;
+    private Double salario;
+
+    public FuncionarioDTO(Long id, String nome, String cargo, Double salario) {
+        this.id = id;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.salario = salario;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public String getCargo() {
+        return this.cargo;
+    }
+
+    public Double getSalario() {
+        return this.salario;
+    }
+
+    public String toString() {
+        return "ID: " + this.id + " | Nome: " + this.nome + " | Cargo: " + this.cargo + " | Salario: " + this.salario;
+    }
+}
